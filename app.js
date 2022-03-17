@@ -1,13 +1,57 @@
-// import * as fs from 'fs/promises';
-const fs = require('fs/promises');
-// console.log(fs);
+const yargs = require('yargs')
+const notes = require('./notes.js')
 
-const utils = require('./utils');
+// Customize yargs version
+yargs.version('1.1.0')
 
-fs.appendFile(
-    'text.txt', 
-    "text", 
-    function(){console.log('this'); console.log(this);});
+// Create add command
+yargs.command({
+    command: 'add',
+    describe: 'Add a new note',
+    builder: {
+        title: {
+            describe: 'Note title',
+            demandOption: true,
+            type: 'string'
+        },
+        body: {
+            describe: 'Note body',
+            demandOption: true,
+            type: 'string'
+        }
+    },
+    handler: function (argv) {
+        notes.addNote(argv.title, argv.body)
+    }
+})
 
-const name = "app_name";
-console.log(utils);
+// Create remove command
+yargs.command({
+    command: 'remove',
+    describe: 'Remove a note',
+    handler: function () {
+        console.log('Removing the note')
+    }
+})
+
+// Create list command
+yargs.command({
+    command: 'list',
+    describe: 'List your notes',
+    handler: function () {
+        console.log('Listing out all notes')
+    }
+})
+
+// Create read command
+yargs.command({
+    command: 'read',
+    describe: 'Read a note',
+    handler: function () {
+        console.log('Reading a note')
+    }
+})
+
+yargs.parse()
+console.log(yargs.argv);
+
